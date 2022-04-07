@@ -22,6 +22,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.mediacodec.MediaCodecRenderer;
 import com.google.android.exoplayer2.mediacodec.MediaCodecUtil;
@@ -137,11 +138,11 @@ public class ExoPlayable extends PlayableImpl {
       }
     }
 
-    @Override public void onPlayerError(ExoPlaybackException error) {
+    @Override public void onPlayerError(PlaybackException error) {
       /// Adapt from ExoPlayer Demo
       String errorString = null;
-      if (error.type == ExoPlaybackException.TYPE_RENDERER) {
-        Exception cause = error.getRendererException();
+      if (error.errorCode == ExoPlaybackException.TYPE_RENDERER) {
+        Throwable cause = error.getCause();
         if (cause instanceof MediaCodecRenderer.DecoderInitializationException) {
           // Special case for decoder initialization failures.
           MediaCodecRenderer.DecoderInitializationException decoderInitializationException =
@@ -188,9 +189,9 @@ public class ExoPlayable extends PlayableImpl {
     }
   }
 
-  static boolean isBehindLiveWindow(ExoPlaybackException error) {
-    if (error.type != ExoPlaybackException.TYPE_SOURCE) return false;
-    Throwable cause = error.getSourceException();
+  static boolean isBehindLiveWindow(PlaybackException error) {
+    if (error.errorCode != ExoPlaybackException.TYPE_SOURCE) return false;
+    Throwable cause = error.getCause();
     while (cause != null) {
       if (cause instanceof BehindLiveWindowException) return true;
       cause = cause.getCause();
