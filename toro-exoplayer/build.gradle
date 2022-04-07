@@ -69,4 +69,10 @@ ext {
 
 project.archivesBaseName = "toro-ext-exoplayer"
 
+configurations.all {
+  resolutionStrategy {
+    force "androidx.core:core:${rootProject.ext.androidXCore}"
+    force "androidx.core:core-ktx:${rootProject.ext.androidXCore}"
+  }
+}
 apply from: '../gradle/script/publish.gradle'

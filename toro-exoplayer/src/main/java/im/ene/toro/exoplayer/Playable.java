@@ -19,7 +19,6 @@ package im.ene.toro.exoplayer;
 import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
@@ -33,7 +32,6 @@ import com.google.android.exoplayer2.text.Cue;
 import com.google.android.exoplayer2.text.TextOutput;
 import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.video.VideoListener;
 import com.google.android.exoplayer2.video.VideoSize;
 import im.ene.toro.ToroPlayer;
 import im.ene.toro.annotations.RemoveIn;
@@ -202,7 +200,7 @@ public interface Playable {
   void removeErrorListener(@Nullable ToroPlayer.OnErrorListener listener);
 
   // Combine necessary interfaces.
-  interface EventListener extends Player.Listener, VideoListener, TextOutput, MetadataOutput {
+  interface EventListener extends Player.Listener {
 
   }
 
