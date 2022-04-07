@@ -29,6 +29,9 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.analytics.AnalyticsCollector;
 import com.google.android.exoplayer2.drm.DrmSessionManager;
 import com.google.android.exoplayer2.drm.FrameworkMediaCrypto;
+import com.google.android.exoplayer2.source.DefaultMediaSourceFactory;
+import com.google.android.exoplayer2.source.LoadEventInfo;
+import com.google.android.exoplayer2.source.MediaLoadData;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.MediaSourceEventListener;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
@@ -63,7 +66,7 @@ public class DefaultExoCreator implements ExoCreator, MediaSourceEventListener {
   private final RenderersFactory renderersFactory;  // stateless
   private final DataSource.Factory mediaDataSourceFactory;  // stateless
   private final DataSource.Factory manifestDataSourceFactory; // stateless
-  private final DrmSessionManager<FrameworkMediaCrypto> drmSessionManager; // stateless
+  private final DrmSessionManager drmSessionManager; // stateless
   private final Clock clock; // stateless
 
   public DefaultExoCreator(@NonNull ToroExo toro, @NonNull Config config) {
@@ -131,9 +134,14 @@ public class DefaultExoCreator implements ExoCreator, MediaSourceEventListener {
   }
 
   @NonNull @Override public SimpleExoPlayer createPlayer() {
-    return new ToroExoPlayer(toro.context, renderersFactory, trackSelector, loadControl,
+    return new ToroExoPlayer(new SimpleExoPlayer.Builder(
+        toro.context,
+        renderersFactory,
+        trackSelector,
+        new DefaultMediaSourceFactory(toro.context),
+        loadControl,
         new DefaultBandwidthMeter.Builder(toro.context).build(),
-        new AnalyticsCollector(clock), clock, Util.getLooper());
+        new AnalyticsCollector(clock)));
   }
 
   @NonNull @Override public MediaSource createMediaSource(@NonNull Uri uri, String fileExt) {
@@ -173,10 +181,6 @@ public class DefaultExoCreator implements ExoCreator, MediaSourceEventListener {
     // no-ops
   }
 
-  @Override public void onReadingStarted(int windowIndex, MediaSource.MediaPeriodId mediaPeriodId) {
-    // no-ops
-  }
-
   @Override
   public void onUpstreamDiscarded(int windowIndex, MediaSource.MediaPeriodId mediaPeriodId,
       MediaLoadData mediaLoadData) {
@@ -185,16 +189,6 @@ public class DefaultExoCreator implements ExoCreator, MediaSourceEventListener {
 
   @Override public void onDownstreamFormatChanged(int windowIndex,
       @Nullable MediaSource.MediaPeriodId mediaPeriodId, MediaLoadData mediaLoadData) {
-    // no-ops
-  }
-
-  @Override
-  public void onMediaPeriodCreated(int windowIndex, MediaSource.MediaPeriodId mediaPeriodId) {
-    // no-ops
-  }
-
-  @Override
-  public void onMediaPeriodReleased(int windowIndex, MediaSource.MediaPeriodId mediaPeriodId) {
     // no-ops
   }
 }

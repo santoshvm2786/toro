@@ -23,12 +23,18 @@ import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.exoplayer2.C;
+import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.drm.DrmSessionManager;
+import com.google.android.exoplayer2.drm.DrmSessionManagerProvider;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.source.MediaSourceFactory;
 import com.google.android.exoplayer2.source.ads.AdsLoader;
 import com.google.android.exoplayer2.source.ads.AdsMediaSource;
+import com.google.android.exoplayer2.ui.AdViewProvider;
 import com.google.android.exoplayer2.ui.PlayerView;
+import com.google.android.exoplayer2.upstream.DataSpec;
+import com.google.android.exoplayer2.upstream.HttpDataSource;
+import com.google.android.exoplayer2.upstream.LoadErrorHandlingPolicy;
 import im.ene.toro.ToroPlayer;
 import im.ene.toro.annotations.Beta;
 
@@ -51,9 +57,28 @@ public class AdsPlayable extends ExoPlayable {
       this.player = player;
     }
 
+    @Override public MediaSourceFactory setDrmSessionManagerProvider(
+        @Nullable DrmSessionManagerProvider drmSessionManagerProvider) {
+      return this;
+    }
+
     @Override
-    public MediaSourceFactory setDrmSessionManager(DrmSessionManager<?> drmSessionManager) {
+    public MediaSourceFactory setDrmSessionManager(DrmSessionManager drmSessionManager) {
       // does nothing, DrmSessionManager is used inside ExoCreator
+      return this;
+    }
+
+    @Override public MediaSourceFactory setDrmHttpDataSourceFactory(
+        @Nullable HttpDataSource.Factory drmHttpDataSourceFactory) {
+      return this;
+    }
+
+    @Override public MediaSourceFactory setDrmUserAgent(@Nullable String userAgent) {
+      return this;
+    }
+
+    @Override public MediaSourceFactory setLoadErrorHandlingPolicy(
+        @Nullable LoadErrorHandlingPolicy loadErrorHandlingPolicy) {
       return this;
     }
 
@@ -65,14 +90,18 @@ public class AdsPlayable extends ExoPlayable {
       // IMA does not support Smooth Streaming ads.
       return new int[] { C.TYPE_DASH, C.TYPE_HLS, C.TYPE_OTHER };
     }
+
+    @Override public MediaSource createMediaSource(MediaItem mediaItem) {
+      return this.createMediaSource(mediaItem);
+    }
   }
 
   @NonNull private final AdsLoader adsLoader;
   @NonNull private final FactoryImpl factory;
-  @Nullable private final AdsLoader.AdViewProvider adViewProvider;
+  @Nullable private final AdViewProvider adViewProvider;
 
   /**
-   * @deprecated Use the constructors that use {@link AdsLoader.AdViewProvider} instead.
+   * @deprecated Use the constructors that use {@link AdViewProvider} instead.
    */
   @Deprecated
   public AdsPlayable(ExoCreator creator, Uri uri, String fileExt, ToroPlayer player,
@@ -86,7 +115,7 @@ public class AdsPlayable extends ExoPlayable {
 
   @SuppressWarnings("WeakerAccess")
   public AdsPlayable(ExoCreator creator, Uri uri, String fileExt, ToroPlayer player,
-      @NonNull AdsLoader adsLoader, @Nullable AdsLoader.AdViewProvider adViewProvider) {
+      @NonNull AdsLoader adsLoader, @Nullable AdViewProvider adViewProvider) {
     super(creator, uri, fileExt);
     this.adsLoader = adsLoader;
     this.adViewProvider = adViewProvider;
@@ -111,7 +140,7 @@ public class AdsPlayable extends ExoPlayable {
   }
 
   private static MediaSource createAdsMediaSource(ExoCreator creator, Uri uri, String fileExt,
-      ToroPlayer player, AdsLoader adsLoader, AdsLoader.AdViewProvider adViewProvider,
+      ToroPlayer player, AdsLoader adsLoader, AdViewProvider adViewProvider,
       MediaSourceFactory factory) {
     MediaSource original = creator.createMediaSource(uri, fileExt);
     View playerView = player.getPlayerView();
@@ -119,7 +148,11 @@ public class AdsPlayable extends ExoPlayable {
       throw new IllegalArgumentException("Require PlayerView");
     }
 
-    return new AdsMediaSource(original, factory, adsLoader,
+    return new AdsMediaSource(original,
+        new DataSpec(uri),
+        null,
+        factory,
+        adsLoader,
         adViewProvider == null ? (PlayerView) playerView : adViewProvider);
   }
 }
