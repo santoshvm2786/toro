@@ -16,8 +16,8 @@
 
 package im.ene.toro.exoplayer;
 
-import com.google.android.exoplayer2.DefaultControlDispatcher;
-import com.google.android.exoplayer2.Player;
+//import com.google.android.exoplayer2.DefaultControlDispatcher;
+//import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.ui.PlayerView;
 import im.ene.toro.ToroPlayer;
 import im.ene.toro.annotations.Beta;
@@ -38,24 +38,26 @@ import im.ene.toro.widget.PressablePlayerSelector;
  * already handled by {@link PressablePlayerSelector}.
  */
 @Beta //
-public class ExoPlayerDispatcher extends DefaultControlDispatcher {
+public class ExoPlayerDispatcher {
+//public class ExoPlayerDispatcher extends DefaultControlDispatcher {
 
-  private final PressablePlayerSelector playerSelector;
-  private final ToroPlayer toroPlayer;
 
-  public ExoPlayerDispatcher(PressablePlayerSelector playerSelector, ToroPlayer toroPlayer) {
-    this.playerSelector = playerSelector;
-    this.toroPlayer = toroPlayer;
-  }
-
-  @Override public boolean dispatchSetPlayWhenReady(Player player, boolean playWhenReady) {
-    if (playWhenReady) {
-      // Container will handle the call to play.
-      return playerSelector.toPlay(toroPlayer.getPlayerOrder());
-    } else {
-      player.setPlayWhenReady(false);
-      playerSelector.toPause(toroPlayer.getPlayerOrder());
-      return true;
-    }
-  }
+  //private final PressablePlayerSelector playerSelector;
+  //private final ToroPlayer toroPlayer;
+  //
+  //public ExoPlayerDispatcher(PressablePlayerSelector playerSelector, ToroPlayer toroPlayer) {
+  //  this.playerSelector = playerSelector;
+  //  this.toroPlayer = toroPlayer;
+  //}
+  //
+  //@Override public boolean dispatchSetPlayWhenReady(Player player, boolean playWhenReady) {
+  //  if (playWhenReady) {
+  //    // Container will handle the call to play.
+  //    return playerSelector.toPlay(toroPlayer.getPlayerOrder());
+  //  } else {
+  //    player.setPlayWhenReady(false);
+  //    playerSelector.toPause(toroPlayer.getPlayerOrder());
+  //    return true;
+  //  }
+  //}
 }
