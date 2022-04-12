@@ -83,6 +83,7 @@
 
     <activity-alias
         android:name=".Launch"
+        android:exported="true"
         android:targetActivity=".custom.CustomLayoutActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>

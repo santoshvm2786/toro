@@ -19,7 +19,6 @@ package im.ene.toro.youtube;
 import android.app.Application;
 import com.crashlytics.android.Crashlytics;
 import com.crashlytics.android.ndk.CrashlyticsNdk;
-import com.squareup.leakcanary.LeakCanary;
 import io.fabric.sdk.android.Fabric;
 
 /**
@@ -30,10 +29,6 @@ public class YtApp extends Application {
 
   @Override public void onCreate() {
     super.onCreate();
-    if (LeakCanary.isInAnalyzerProcess(this)) {
-      return;
-    }
-    LeakCanary.install(this);
     Fabric.with(this, new Crashlytics(), new CrashlyticsNdk());
   }
 }

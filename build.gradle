@@ -17,44 +17,48 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-  ext.kotlin_version = '1.6.10'
+  ext.android_builtools_version = '7.4.2'
+  ext.kotlin_version = '1.7.22'
   repositories {
     google()
     mavenCentral()
     maven { url 'https://maven.fabric.io/public' }
-    jcenter()
+    maven { url 'https://plugins.gradle.org/m2' }
     maven { url 'https://oss.jfrog.org/artifactory/plugins-release' }
   }
 
   dependencies {
     //noinspection GradleDependency
-    classpath 'com.android.tools.build:gradle:3.6.4'
+    classpath "com.android.tools.build:gradle:$android_builtools_version"
     classpath 'com.getkeepsafe.dexcount:dexcount-gradle-plugin:1.0.3'
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
     classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
     classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5'
-    classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.28.0"
+    classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.28.2"
 
     classpath 'io.fabric.tools:gradle:1.31.2'
   }
 }
 
 ext {
-  androidVersion = 30
+  androidVersion = 33
   minSupportSDKVersion = 28
   demoMinSDK = 28
-  supportLibraryVersion = '30.0.3'
-  constrainLayoutVersion = '2.1.3'
+  supportLibraryVersion = '33.0.2'
+  constrainLayoutVersion = '2.1.4'
   archLibraryVersion = '1.1.1'
   exoPlayer2Version = '2.16.1'
   googleApiClient = '1.30.1'
-  materialVersion = "1.4.0"
-  appCompatVersion = "1.3.1"
+  materialVersion = "1.8.0"
+  appCompatVersion = "1.6.1"
   glide = '4.13.1'
-  leackCanary = '1.6.3'
+  leackCanary = '2.10'
+  leackCanaryNoOp = '1.6.3'
   jUnit = "4.13.2"
-  androidXCore = "1.6.0"
+  androidXCore = "1.7.0"
+  androidXAnnotation = "1.3.0"
+  espressoCoreVersion = "3.5.1"
 }
 
 allprojects {
