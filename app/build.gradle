@@ -134,10 +134,3 @@ dependencies {
   androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
   androidTestImplementation 'androidx.test.espresso:espresso-contrib:3.4.0'
 }
-
-configurations.all {
-  resolutionStrategy {
-    force "androidx.core:core:${rootProject.ext.androidXCore}"
-    force "androidx.core:core-ktx:${rootProject.ext.androidXCore}"
-  }
-}
