@@ -27,7 +27,7 @@ import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.RenderersFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.analytics.AnalyticsCollector;
-import com.google.android.exoplayer2.drm.DrmSessionManager;
+import com.google.android.exoplayer2.drm.DrmSessionManagerProvider;
 import com.google.android.exoplayer2.source.DefaultMediaSourceFactory;
 import com.google.android.exoplayer2.source.LoadEventInfo;
 import com.google.android.exoplayer2.source.MediaLoadData;
@@ -65,7 +65,7 @@ public class DefaultExoCreator implements ExoCreator, MediaSourceEventListener {
   private final RenderersFactory renderersFactory;  // stateless
   private final DataSource.Factory mediaDataSourceFactory;  // stateless
   private final DataSource.Factory manifestDataSourceFactory; // stateless
-  private final DrmSessionManager drmSessionManager; // stateless
+  private final DrmSessionManagerProvider drmSessionManager; // stateless
   private final Clock clock; // stateless
 
   public DefaultExoCreator(@NonNull ToroExo toro, @NonNull Config config) {
