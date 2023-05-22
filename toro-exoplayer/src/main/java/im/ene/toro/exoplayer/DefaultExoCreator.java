@@ -26,7 +26,7 @@ import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.RenderersFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.analytics.AnalyticsCollector;
+import com.google.android.exoplayer2.analytics.DefaultAnalyticsCollector;
 import com.google.android.exoplayer2.drm.DrmSessionManagerProvider;
 import com.google.android.exoplayer2.source.DefaultMediaSourceFactory;
 import com.google.android.exoplayer2.source.LoadEventInfo;
@@ -140,7 +140,7 @@ public class DefaultExoCreator implements ExoCreator, MediaSourceEventListener {
         new DefaultMediaSourceFactory(toro.context),
         loadControl,
         new DefaultBandwidthMeter.Builder(toro.context).build(),
-        new AnalyticsCollector(clock)));
+        new DefaultAnalyticsCollector(clock)));
   }
 
   @NonNull @Override public MediaSource createMediaSource(@NonNull Uri uri, String fileExt) {

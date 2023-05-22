@@ -62,28 +62,9 @@ public class AdsPlayable extends ExoPlayable {
       return this;
     }
 
-    @Override
-    public MediaSourceFactory setDrmSessionManager(DrmSessionManager drmSessionManager) {
-      // does nothing, DrmSessionManager is used inside ExoCreator
-      return this;
-    }
-
-    @Override public MediaSourceFactory setDrmHttpDataSourceFactory(
-        @Nullable HttpDataSource.Factory drmHttpDataSourceFactory) {
-      return this;
-    }
-
-    @Override public MediaSourceFactory setDrmUserAgent(@Nullable String userAgent) {
-      return this;
-    }
-
     @Override public MediaSourceFactory setLoadErrorHandlingPolicy(
         @Nullable LoadErrorHandlingPolicy loadErrorHandlingPolicy) {
       return this;
-    }
-
-    @Override public MediaSource createMediaSource(Uri uri) {
-      return this.creator.createMediaSource(uri, null);
     }
 
     @Override public int[] getSupportedTypes() {
