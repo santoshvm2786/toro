@@ -24,13 +24,10 @@ import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.Timeline;
+import com.google.android.exoplayer2.Tracks;
 import com.google.android.exoplayer2.metadata.Metadata;
-import com.google.android.exoplayer2.metadata.MetadataOutput;
 import com.google.android.exoplayer2.source.MediaSource;
-import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.text.Cue;
-import com.google.android.exoplayer2.text.TextOutput;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.video.VideoSize;
 import im.ene.toro.ToroPlayer;
@@ -211,11 +208,6 @@ public interface Playable {
 
     }
 
-    @Override
-    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-
-    }
-
     @Override public void onLoadingChanged(boolean isLoading) {
 
     }
@@ -251,11 +243,6 @@ public interface Playable {
     @Override public void onVideoSizeChanged(VideoSize videoSize) {
 
     }
-
-    //@Override public void onVideoSizeChanged(int width, int height, int unappliedRotationDegrees,
-    //    float pixelWidthHeightRatio) {
-    //
-    //}
 
     @Override
     public void onSurfaceSizeChanged(int width, int height) {
@@ -306,10 +293,9 @@ public interface Playable {
       }
     }
 
-    @Override
-    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+    @Override public void onTracksChanged(Tracks tracks) {
       for (EventListener eventListener : this) {
-        eventListener.onTracksChanged(trackGroups, trackSelections);
+        eventListener.onTracksChanged(tracks);
       }
     }
 

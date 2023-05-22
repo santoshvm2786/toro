@@ -24,15 +24,15 @@ import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.PlaybackException;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.Tracks;
 import com.google.android.exoplayer2.mediacodec.MediaCodecRenderer;
 import com.google.android.exoplayer2.mediacodec.MediaCodecUtil;
 import com.google.android.exoplayer2.source.BehindLiveWindowException;
-import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo;
-import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
+import java.util.List;
 
 import static com.google.android.exoplayer2.trackselection.MappingTrackSelector.MappedTrackInfo.RENDERER_SUPPORT_UNSUPPORTED_TRACKS;
 import static im.ene.toro.exoplayer.ToroExo.toro;
@@ -54,7 +54,7 @@ public class ExoPlayable extends PlayableImpl {
 
   // Adapt from ExoPlayer demo.
   protected boolean inErrorState = false;
-  protected TrackGroupArray lastSeenTrackGroupArray;
+  protected List<Tracks.Group> lastSeenTrackGroupList;
 
   /**
    * Construct an instance of {@link ExoPlayable} from an {@link ExoCreator} and {@link Uri}. The
@@ -75,14 +75,14 @@ public class ExoPlayable extends PlayableImpl {
       super.addEventListener(listener);
     }
     super.prepare(prepareSource);
-    this.lastSeenTrackGroupArray = null;
+    this.lastSeenTrackGroupList = null;
     this.inErrorState = false;
   }
 
   @Override public void setPlayerView(@Nullable PlayerView playerView) {
     // This will also clear these flags
     if (playerView != this.playerView) {
-      this.lastSeenTrackGroupArray = null;
+      this.lastSeenTrackGroupList = null;
       this.inErrorState = false;
     }
     super.setPlayerView(playerView);
@@ -90,7 +90,7 @@ public class ExoPlayable extends PlayableImpl {
 
   @Override public void reset() {
     super.reset();
-    this.lastSeenTrackGroupArray = null;
+    this.lastSeenTrackGroupList = null;
     this.inErrorState = false;
   }
 
@@ -100,7 +100,7 @@ public class ExoPlayable extends PlayableImpl {
       listener = null;
     }
     super.release();
-    this.lastSeenTrackGroupArray = null;
+    this.lastSeenTrackGroupList = null;
     this.inErrorState = false;
   }
 
@@ -117,11 +117,11 @@ public class ExoPlayable extends PlayableImpl {
 
   class Listener extends DefaultEventListener {
 
-    @Override
-    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-      super.onTracksChanged(trackGroups, trackSelections);
-      if (trackGroups == lastSeenTrackGroupArray) return;
-      lastSeenTrackGroupArray = trackGroups;
+    @Override public void onTracksChanged(Tracks tracks) {
+      super.onTracksChanged(tracks);
+      List<Tracks.Group> trackGroups = tracks.getGroups();
+      if (trackGroups == lastSeenTrackGroupList) return;
+      lastSeenTrackGroupList = trackGroups;
       if (!(creator instanceof DefaultExoCreator)) return;
       TrackSelector selector = ((DefaultExoCreator) creator).getTrackSelector();
       if (selector instanceof DefaultTrackSelector) {
