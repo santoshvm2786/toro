@@ -21,7 +21,6 @@ import android.net.Uri;
 import android.os.Handler;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.C.ContentType;
 import com.google.android.exoplayer2.MediaItem;
 import com.google.android.exoplayer2.drm.DrmSessionManagerProvider;
@@ -37,6 +36,10 @@ import com.google.android.exoplayer2.source.smoothstreaming.SsMediaSource;
 import com.google.android.exoplayer2.upstream.DataSource;
 
 import static android.text.TextUtils.isEmpty;
+import static com.google.android.exoplayer2.C.CONTENT_TYPE_DASH;
+import static com.google.android.exoplayer2.C.CONTENT_TYPE_HLS;
+import static com.google.android.exoplayer2.C.CONTENT_TYPE_OTHER;
+import static com.google.android.exoplayer2.C.CONTENT_TYPE_SS;
 import static com.google.android.exoplayer2.util.Util.inferContentType;
 
 /**
@@ -64,26 +67,26 @@ public interface MediaSourceBuilder {
       @ContentType int type = isEmpty(ext) ? inferContentType(uri) : inferContentType("." + ext);
       MediaSource result;
       switch (type) {
-        case C.TYPE_SS:
+        case CONTENT_TYPE_SS:
           SsMediaSource.Factory factory =
               new SsMediaSource.Factory(new DefaultSsChunkSource.Factory(mediaDataSourceFactory),
                   manifestDataSourceFactory);
           if (drmSessionManager != null) factory.setDrmSessionManagerProvider(drmSessionManager);
           result = factory.createMediaSource(MediaItem.fromUri(uri));
           break;
-        case C.TYPE_DASH:
+        case CONTENT_TYPE_DASH:
           DashMediaSource.Factory factory1 = new DashMediaSource.Factory(
               new DefaultDashChunkSource.Factory(mediaDataSourceFactory),
               manifestDataSourceFactory);
           if (drmSessionManager != null) factory1.setDrmSessionManagerProvider(drmSessionManager);
           result = factory1.createMediaSource(MediaItem.fromUri(uri));
           break;
-        case C.TYPE_HLS:
+        case CONTENT_TYPE_HLS:
           HlsMediaSource.Factory factory2 = new HlsMediaSource.Factory(mediaDataSourceFactory);
           if (drmSessionManager != null) factory2.setDrmSessionManagerProvider(drmSessionManager);
           result =  factory2.createMediaSource(MediaItem.fromUri(uri));
           break;
-        case C.TYPE_OTHER:
+        case CONTENT_TYPE_OTHER:
           ProgressiveMediaSource.Factory factory3 =
               new ProgressiveMediaSource.Factory(mediaDataSourceFactory);
           if (drmSessionManager != null) factory3.setDrmSessionManagerProvider(drmSessionManager);
