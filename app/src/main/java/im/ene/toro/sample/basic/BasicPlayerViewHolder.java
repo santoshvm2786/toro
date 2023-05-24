@@ -52,7 +52,9 @@ class BasicPlayerViewHolder extends RecyclerView.ViewHolder implements ToroPlaye
   public BasicPlayerViewHolder(View itemView, PressablePlayerSelector selector) {
     super(itemView);
     ButterKnife.bind(this, itemView);
-    if(playerView.getPlayer()!=null) new ExoForwardingPlayer(playerView.getPlayer(), selector, this);
+    if (playerView.getPlayer() != null && selector != null) {
+      playerView.setPlayer(new ExoForwardingPlayer(playerView.getPlayer(), selector, this));
+    }
   }
 
   @NonNull @Override public View getPlayerView() {
